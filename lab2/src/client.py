@@ -3,11 +3,9 @@ import time
 
 if __name__ == '__main__':
     c = Mysocket(6666)
+    msg = 7
     c.connect()
-    c.send(7)
-    c.clientReceive()
-    c.send(6)
-    # while msg != 0:
-    #     c.sendmsg(msg)
-    #     msg -= 1
+    while msg != 0:
+        c.send(msg)
+        msg = c.clientReceive()
     

@@ -37,21 +37,21 @@ class Mysocket:
     def serverReceive(self):
         while True:
             client, (rip, rport) = self.Socket.accept()
-            self.client_msg = client.recv(self.BUF_SIZE)
-            client_msg = self.client_msg
-            if client_msg:
-                msg = "Receive messgae from IP: " + str(rip) + " port: " + str(rport)
-                print(msg)
-                print('Received value : ', binascii.hexlify(client_msg))
-                # Unpack data
-                s = struct.Struct('!' + 'i')							# ! is network order (receive format is network order)
-                unpacked_data = s.unpack(client_msg)
-                print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
-                record = 6		# must encode a string to bytes
-                s = struct.Struct('!' + 'I')							# ! is network order
-                ret_data = s.pack(record)
-                client.send(ret_data)
-                client.close()
+            while True:
+                self.client_msg = client.recv(self.BUF_SIZE)
+                client_msg = self.client_msg
+                if client_msg:
+                    msg = "Receive messgae from IP: " + str(rip) + " port: " + str(rport)
+                    print(msg)
+                    print('Received value : ', binascii.hexlify(client_msg))
+                    # Unpack data
+                    s = struct.Struct('!' + 'i')							# ! is network order (receive format is network order)
+                    unpacked_data = s.unpack(client_msg)
+                    print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
+                    record = int(unpacked_data[0] - 1)		# must encode a string to bytes
+                    s = struct.Struct('!' + 'I')							# ! is network order
+                    ret_data = s.pack(record)
+                    client.send(ret_data)
     
     def unpack(self,msg):
         client_msg = msg
@@ -63,8 +63,15 @@ class Mysocket:
         print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
     
     def clientReceive(self):
-        self.Socket.recv(self.BUF_SIZE)
-        self.unpack(self.client_msg)
+        ret_data = self.Socket.recv(self.BUF_SIZE)
+        s = struct.Struct('!' + 'i')
+        ret_data = s.unpack(ret_data)	
+        print(ret_data[0])
+        if ret_data[0] == 0:
+            self.Socket.shutdown(2)
+            self.Socket.close()
+        return ret_data[0]
+
             
     def reinit(self):
         self.__init__(self.PORT)
