@@ -19,7 +19,7 @@ class Mysocket:
         
     def send(self,num):
         record = (num)		# must encode a string to bytes
-        s = struct.Struct('!' + 'I')							# ! is network order
+        s = struct.Struct('!' + 'i')							# ! is network order
         self.packed_data = s.pack(record)
         print('Packed value : ', binascii.hexlify(self.packed_data))
         try:
@@ -48,10 +48,16 @@ class Mysocket:
                     s = struct.Struct('!' + 'i')							# ! is network order (receive format is network order)
                     unpacked_data = s.unpack(client_msg)
                     print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
-                    record = int(unpacked_data[0] - 1)		# must encode a string to bytes
-                    s = struct.Struct('!' + 'I')							# ! is network order
-                    ret_data = s.pack(record)
-                    client.send(ret_data)
+                    if unpacked_data[0] == -1:
+                        print("stop")
+                        client.close()
+                        self.Socket.close()
+                        return
+                    else:  
+                        record = int(unpacked_data[0] - 1)		# must encode a string to bytes
+                        s = struct.Struct('!' + 'i')							# ! is network order
+                        ret_data = s.pack(record)
+                        client.send(ret_data)
     
     def unpack(self,msg):
         client_msg = msg
@@ -67,9 +73,9 @@ class Mysocket:
         s = struct.Struct('!' + 'i')
         ret_data = s.unpack(ret_data)	
         print(ret_data[0])
-        if ret_data[0] == 0:
-            self.Socket.shutdown(2)
-            self.Socket.close()
+        # if ret_data[0] == 0:
+        #     self.Socket.shutdown(2)
+        #     self.Socket.close()
         return ret_data[0]
 
             

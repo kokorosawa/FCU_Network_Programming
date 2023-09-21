@@ -8,4 +8,7 @@ if __name__ == '__main__':
     while msg != 0:
         c.send(msg)
         msg = c.clientReceive()
+        if msg == 0:
+            c.send(-1)
+
     
