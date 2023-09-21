@@ -17,13 +17,14 @@ class Mysocket:
         self.Socket.connect((self.serverIP, self.PORT))
         
         
-    def send(self,num):
-        record = (num)		# must encode a string to bytes
-        s = struct.Struct('!' + 'i')							# ! is network order
-        self.packed_data = s.pack(record)
-        print('Packed value : ', binascii.hexlify(self.packed_data))
+    def send(self,num,control ='#'):
+        self.control = control
+        record = (num, control.encode('utf-8'))		# must encode a string to bytes
+        s = struct.Struct('!' + 'i 5s')							# ! is network order
+        self.packed_data = s.pack(*record)
+        # print('Packed value : ', binascii.hexlify(self.packed_data))
         try:
-            print('Send: %s' % self.packed_data)
+            print('Send: %d' % num)
             self.Socket.send(self.packed_data)
         except socket.error as e:
             print('Socket error: %s' % str(e))
@@ -41,38 +42,40 @@ class Mysocket:
                 self.client_msg = client.recv(self.BUF_SIZE)
                 client_msg = self.client_msg
                 if client_msg:
-                    msg = "Receive messgae from IP: " + str(rip) + " port: " + str(rport)
-                    print(msg)
-                    print('Received value : ', binascii.hexlify(client_msg))
+                    # msg = "Receive messgae from IP: " + str(rip) + " port: " + str(rport)
+                    # print(msg)
+                    # print('Received value : ', binascii.hexlify(client_msg))
                     # Unpack data
-                    s = struct.Struct('!' + 'i')							# ! is network order (receive format is network order)
+                    s = struct.Struct('!' + 'i 5s')# ! is network order (receive format is network order)
                     unpacked_data = s.unpack(client_msg)
-                    print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
-                    if unpacked_data[0] == -1:
+                    print('The data you receive: Integer=%d string: %s' %(unpacked_data[0],unpacked_data[1].decode('utf-8')))
+                    if 's' in unpacked_data[1].decode('utf-8') :
                         print("stop")
                         client.close()
                         self.Socket.close()
                         return
-                    else:  
-                        record = int(unpacked_data[0] - 1)		# must encode a string to bytes
-                        s = struct.Struct('!' + 'i')							# ! is network order
-                        ret_data = s.pack(record)
-                        client.send(ret_data)
+                    record = int(unpacked_data[0] - 1)
+                    print("return value: %d "% (record))# must encode a string to bytes
+                    s = struct.Struct('!' + 'i')							# ! is network order
+                    ret_data = s.pack(record)
+                    client.send(ret_data)
     
     def unpack(self,msg):
         client_msg = msg
         print(msg)
-        print('Received value : ', binascii.hexlify(client_msg))
+        # print('Received value : ', binascii.hexlify(client_msg))
         # Unpack data
         s = struct.Struct('!' + 'i')							# ! is network order (receive format is network order)
         unpacked_data = s.unpack(client_msg)
-        print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
+        # print('The data you receive:\n Integer=%d' %(unpacked_data[0]))
     
     def clientReceive(self):
+        if 's' in self.control:
+            return
         ret_data = self.Socket.recv(self.BUF_SIZE)
         s = struct.Struct('!' + 'i')
         ret_data = s.unpack(ret_data)	
-        print(ret_data[0])
+        print("return num:"+str(ret_data[0]))
         # if ret_data[0] == 0:
         #     self.Socket.shutdown(2)
         #     self.Socket.close()
@@ -81,3 +84,4 @@ class Mysocket:
             
     def reinit(self):
         self.__init__(self.PORT)
+        

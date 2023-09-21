@@ -3,12 +3,17 @@ import time
 
 if __name__ == '__main__':
     c = Mysocket(6666)
-    msg = 7
+    msg = int(input("input number:"))
+    # msg = 7
     c.connect()
-    while msg != 0:
+    # c.send(0)
+    # c.clientReceive()
+    while True:
         c.send(msg)
-        msg = c.clientReceive()
-        if msg == 0:
-            c.send(-1)
+        msg = c.clientReceive() - 1
+        if msg <= 0:
+            c.send(1, 's')
+            print(c.clientReceive())
+            break
 
     
