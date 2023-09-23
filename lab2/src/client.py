@@ -11,9 +11,9 @@ if __name__ == '__main__':
     while True:
         c.send(msg)
         msg = c.clientReceive() - 1
+        
         if msg <= 0:
-            c.send(1, 's')
-            print(c.clientReceive())
+            c.stop()
             break
-
+        print(msg)
     

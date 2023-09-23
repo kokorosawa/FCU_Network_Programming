@@ -28,6 +28,18 @@ class Mysocket:
             self.Socket.send(self.packed_data)
         except socket.error as e:
             print('Socket error: %s' % str(e))
+            
+    def stop(self):
+        num = 0
+        self.control = "s"
+        record = (num, self.control.encode('utf-8'))		# must encode a string to bytes
+        s = struct.Struct('!' + 'i 5s')							# ! is network order
+        self.packed_data = s.pack(*record)
+        # print('Packed value : ', binascii.hexlify(self.packed_data))
+        try:
+            self.Socket.send(self.packed_data)
+        except socket.error as e:
+            print('Socket error: %s' % str(e))
 
     def listenPort(self):
         self.Socket.bind(('', self.PORT)) 
@@ -49,7 +61,7 @@ class Mysocket:
                     s = struct.Struct('!' + 'i 5s')# ! is network order (receive format is network order)
                     unpacked_data = s.unpack(client_msg)
                     print('The data you receive: Integer=%d string: %s' %(unpacked_data[0],unpacked_data[1].decode('utf-8')))
-                    if 's' in unpacked_data[1].decode('utf-8') :
+                    if 's' in unpacked_data[1].decode('utf-8') or unpacked_data[0] == 0:
                         print("stop")
                         client.close()
                         self.Socket.close()
@@ -71,6 +83,7 @@ class Mysocket:
     
     def clientReceive(self):
         if 's' in self.control:
+            self.Socket.close()
             return
         ret_data = self.Socket.recv(self.BUF_SIZE)
         s = struct.Struct('!' + 'i')
