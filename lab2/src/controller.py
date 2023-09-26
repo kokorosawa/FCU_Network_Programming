@@ -32,7 +32,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.openClient.clicked.connect(self.openClient)
     
     def openClient(self):
-        self.qthread = ClientTask(self.ui.inputNum.text())
+        self.qthread = ClientTask(self.ui.inputNum.text(),self.ui.serverPort.text())
         self.qthread.start()
         
     def signalListener(self):
@@ -42,7 +42,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.clientConnectPort.setText(self.ui.serverPort.text())
 
     def openServer(self):
-        self.qthread = ServerTask()
+        self.qthread = ServerTask(self.ui.serverPort.text())
         self.qthread.start()
         
         
@@ -57,16 +57,18 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.clientLog.append(log)
     
 class ServerTask(QThread):
-    def __init__(self):
+    def __init__(self,port):
+        self.port = port
         super().__init__()
     
     def run(self):
-        server_task()
+        server_task(self.port)
         
 class ClientTask(QThread):
-    def __init__(self,num):
+    def __init__(self,num,port):
         self.num = num
+        self.port = port
         super().__init__()
     
     def run(self):
-        client_task(self.num)   
+        client_task(self.num,self.port)   
