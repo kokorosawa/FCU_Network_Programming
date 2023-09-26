@@ -17,7 +17,7 @@ class EmittingStr(QObject):
     
 class MainWindow(QtWidgets.QMainWindow):
     signal = pyqtSignal()
-    
+    msg = ""
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
@@ -32,7 +32,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.openClient.clicked.connect(self.openClient)
     
     def openClient(self):
-        self.qthread = ClientTask()
+        self.qthread = ClientTask(self.ui.inputNum.text())
         self.qthread.start()
         
     def signalListener(self):
@@ -51,7 +51,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.serverLog.setText(str(value))
         
     def update_console(self, log: str):
-        self.ui.serverLog.append(log)
+        if "Server" in log:
+            self.ui.serverLog.append(log)
+        if "Client" in log:
+            self.ui.clientLog.append(log)
     
 class ServerTask(QThread):
     def __init__(self):
@@ -61,8 +64,9 @@ class ServerTask(QThread):
         server_task()
         
 class ClientTask(QThread):
-    def __init__(self):
+    def __init__(self,num):
+        self.num = num
         super().__init__()
     
     def run(self):
-        client_task()   
+        client_task(self.num)   

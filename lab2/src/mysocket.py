@@ -13,7 +13,7 @@ class Mysocket:
         self.Socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def connect(self):
-        print('Connecting to %s port %s' % (self.serverIP, self.PORT))
+        print('[Client]:Connecting to %s port %s' % (self.serverIP, self.PORT))
         self.Socket.connect((self.serverIP, self.PORT))
         
         
@@ -24,7 +24,7 @@ class Mysocket:
         self.packed_data = s.pack(*record)
         # print('Packed value : ', binascii.hexlify(self.packed_data))
         try:
-            print('Send: %d' % num)
+            print('[Client]:Send: %d' % num)
             self.Socket.send(self.packed_data)
         except socket.error as e:
             print('Socket error: %s' % str(e))
@@ -44,8 +44,8 @@ class Mysocket:
     def listenPort(self):
         self.Socket.bind(('', self.PORT)) 
         self.Socket.listen(self.backlog)
-        print('Starting up server on port: %s' % (self.PORT))
-        print('Waiting to receive message from client')
+        print('[Server]:Starting up server on port: %s' % (self.PORT))
+        print('[Server]:Waiting to receive message')
         
     def serverReceive(self):
         while True:
@@ -60,14 +60,15 @@ class Mysocket:
                     # Unpack data
                     s = struct.Struct('!' + 'i 5s')# ! is network order (receive format is network order)
                     unpacked_data = s.unpack(client_msg)
-                    print('The data you receive: Integer=%d string: %s' %(unpacked_data[0],unpacked_data[1].decode('utf-8')))
+                    
                     if 's' in unpacked_data[1].decode('utf-8') or unpacked_data[0] == 0:
                         print("stop")
                         client.close()
                         self.Socket.close()
                         return
+                    print('[Server]:Receive Integer=%d' %(unpacked_data[0]))
                     record = int(unpacked_data[0] - 1)
-                    print("return value: %d "% (record))# must encode a string to bytes
+                    print("[Server]:return value: %d "% (record))# must encode a string to bytes
                     s = struct.Struct('!' + 'i')							# ! is network order
                     ret_data = s.pack(record)
                     client.send(ret_data)
@@ -88,7 +89,7 @@ class Mysocket:
         ret_data = self.Socket.recv(self.BUF_SIZE)
         s = struct.Struct('!' + 'i')
         ret_data = s.unpack(ret_data)	
-        print("return num:"+str(ret_data[0]))
+        print("[Client]:Return num:"+str(ret_data[0]))
         # if ret_data[0] == 0:
         #     self.Socket.shutdown(2)
         #     self.Socket.close()

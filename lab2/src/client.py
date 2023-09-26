@@ -3,13 +3,10 @@ import time
 import sys
 
 
-def client_task():
+def client_task(msg):
     c = Mysocket()
-    # msg = int(input("input number:"))
-    msg = 7
+    msg = int(msg)
     c.connect()
-    # c.send(0)
-    # c.clientReceive()
     while True:
         c.send(msg)
         msg = c.clientReceive() - 1
@@ -17,9 +14,8 @@ def client_task():
         if msg <= 0:
             c.stop()
             break
-        print(msg)
 
 if __name__ == '__main__':
-    client_task()
-    
+    msg = int(input("input number:"))
+    client_task(msg)
     
