@@ -1,58 +1,68 @@
+import typing
 from PyQt6 import QtWidgets, QtGui, QtCore
 from view import Ui_Form
 import subprocess,subprocess
 import os,sys,time
 from PyQt6.QtCore import QThread, pyqtSignal,QProcess,QObject
 from server import server_task
+from client import client_task
+
+
 class EmittingStr(QObject):
     textwriter = pyqtSignal(str)
     
     def write(self, text):
         self.textwriter.emit(str(text))
+        QtWidgets.QApplication.processEvents()
     
 class MainWindow(QtWidgets.QMainWindow):
+    signal = pyqtSignal()
+    
     def __init__(self):
-		# in python3, super(Class, self).xxx = super().xxx
-        super(MainWindow, self).__init__()
+        super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        self.set_control()
         self.ui.serverPort.setText("6666")
+        sys.stdout = EmittingStr(textwriter=self.update_console)
+    
+    def set_control(self):
         self.ui.serverPort.textChanged.connect(self.setClientConnectPort)
         self.ui.openServer.clicked.connect(self.openServer)
-        # sys.stdout = EmittingStr(textwriter=self.outputWritten)
-        # sys.stderr = EmittingStr(textwriter=self.outputWritten)
+        self.ui.openClient.clicked.connect(self.openClient)
+    
+    def openClient(self):
+        self.qthread = ClientTask()
+        self.qthread.start()
         
-    def outputWritten(self, text):
-        cursor = self.ui.serverLog.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.ui.serverLog.setTextCursor(cursor)
-        self.ui.serverLog.ensureCursorVisible()
+    def signalListener(self):
+        print('收到信號')
 
     def setClientConnectPort(self):
         self.ui.clientConnectPort.setText(self.ui.serverPort.text())
-        
-    def outputWritten(self, text):
-        cursor = self.ui.serverLog.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.ui.serverLog.setTextCursor(cursor)
-        self.ui.serverLog.ensureCursorVisible()
 
     def openServer(self):
-        self.qthread = ThreadTask()
-        self.ui.serverLog.setText("1")
-        self.qthread.qthread_signal.connect(self.progress_changed) 
-        self.qthread.start_progress()
+        self.qthread = ServerTask()
+        self.qthread.start()
         
-    def progress_changed(self, value):        
-       self.ui.serverLog.setText(str(value))
-class ThreadTask(QThread):
-    qthread_signal = pyqtSignal(int)
-
-    def start_progress(self):
-        max_value = 100
-        for i in range(max_value):
-            time.sleep(0.1)
-            print('WorkerThread::run ' + str(i))
-            self.qthread_signal.emit(i+1)
+        
+    def progress_changed(self, value):  
+        self.ui.openServer.clicked.connect(lambda:self.signal.emit())
+        self.ui.serverLog.setText(str(value))
+        
+    def update_console(self, log: str):
+        self.ui.serverLog.append(log)
+    
+class ServerTask(QThread):
+    def __init__(self):
+        super().__init__()
+    
+    def run(self):
+        server_task()
+        
+class ClientTask(QThread):
+    def __init__(self):
+        super().__init__()
+    
+    def run(self):
+        client_task()   

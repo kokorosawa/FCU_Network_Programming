@@ -4,7 +4,7 @@ import struct
 import binascii
 
 class Mysocket:
-    def __init__(self,PORT, BUF_SIZE=1024,serverIP='127.0.0.1',backlog=5):
+    def __init__(self,PORT=6666, BUF_SIZE=1024,serverIP='127.0.0.1',backlog=5):
         self.PORT = PORT
         self.BUF_SIZE = BUF_SIZE
         self.backlog = backlog

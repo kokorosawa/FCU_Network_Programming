@@ -4,7 +4,7 @@ import sys
 
 
 def client_task():
-    c = Mysocket(int(sys.argv[1]))
+    c = Mysocket()
     # msg = int(input("input number:"))
     msg = 7
     c.connect()
