@@ -1,10 +1,12 @@
 from mysocket import Mysocket
 import time
+import sys
 
-if __name__ == '__main__':
-    c = Mysocket(6666)
-    msg = int(input("input number:"))
-    # msg = 7
+
+def client_task():
+    c = Mysocket(int(sys.argv[1]))
+    # msg = int(input("input number:"))
+    msg = 7
     c.connect()
     # c.send(0)
     # c.clientReceive()
@@ -16,4 +18,8 @@ if __name__ == '__main__':
             c.stop()
             break
         print(msg)
+
+if __name__ == '__main__':
+    client_task()
+    
     
