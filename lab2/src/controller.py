@@ -1,9 +1,9 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
 from view import Ui_Form
 import subprocess,subprocess
-import os,sys
+import os,sys,time
 from PyQt6.QtCore import QThread, pyqtSignal,QProcess,QObject
-
+from server import server_task
 class EmittingStr(QObject):
     textwriter = pyqtSignal(str)
     
@@ -32,49 +32,27 @@ class MainWindow(QtWidgets.QMainWindow):
     def setClientConnectPort(self):
         self.ui.clientConnectPort.setText(self.ui.serverPort.text())
         
+    def outputWritten(self, text):
+        cursor = self.ui.serverLog.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        cursor.insertText(text)
+        self.ui.serverLog.setTextCursor(cursor)
+        self.ui.serverLog.ensureCursorVisible()
+
     def openServer(self):
-        # getter = Getter(self)
-        # getter.start()
-        # getter.resultChanged.connect(self.ui.serverLog.append)
-        self.process = QProcess()
-        # self.ui.serverLog.setText(self.process.readAllStandardOutput)
-        # print(self.process.readAllStandardOutput.decode())
-        self.process.setProcessChannelMode(QProcess.MergedChannels)
-        self.process.start("python3" , ["server.py"])
-        while 1:
-            
-            self.process.waitForReadyRead()
-            output = self.process.readAllStandardOutput
-            output = bytearray(output).decode('gbk')
-            self.PID = self.process.processId()
-            if output != ' ':
-                for i in output.split('\r\n')[:-1]:
-                    print(i)
-            if self.PID == 0:
-                 break
+        self.qthread = ThreadTask()
+        self.ui.serverLog.setText("1")
+        self.qthread.qthread_signal.connect(self.progress_changed) 
+        self.qthread.start_progress()
         
-    def addStdOut(self):
-        output = bytes(self.process.readAllStandardOutput()).decode()   
-        self.ui.serverLog.setText(output) 
-        
-    def addStdErr(self):
-        output = bytes(self.process.readAllStandardError()).decode()      
-       
-        
+    def progress_changed(self, value):        
+       self.ui.serverLog.setText(str(value))
+class ThreadTask(QThread):
+    qthread_signal = pyqtSignal(int)
 
-class Process(QtCore.QObject):
-
-    stdout = QtCore.pyqtSignal(str)
-    stderr = QtCore.pyqtSignal(str)
-    finished = QtCore.pyqtSignal(int)
-
-    def start(self, program, args):
-        process = QtCore.QProcess()
-        process.setProgram(program)
-        process.setArguments(args)
-        process.readyReadStandardError.connect(lambda: self.stderr.emit(process.readAllStandardError()))
-        process.readyReadStandardOutput.connect(lambda: self.stderr.emit(process.readAllStandardOutput()))
-        process.finished.connect(self.finished)
-        process.start()
-        
-        self._process = process
+    def start_progress(self):
+        max_value = 100
+        for i in range(max_value):
+            time.sleep(0.1)
+            print('WorkerThread::run ' + str(i))
+            self.qthread_signal.emit(i+1)
