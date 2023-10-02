@@ -6,7 +6,7 @@ PORT = 110
 BUFF_SIZE = 1024			# Receive buffer size
 
 class Mail:
-    def __init__(self, BUFF_SIZE = 1024, USER = "iecs07", PASW = "3SmUnqYy", IP = "140.134.135.41", PORT = 110):
+    def __init__(self, USER = "iecs07", PASW = "3SmUnqYy", IP = "140.134.135.41", PORT = 110, BUFF_SIZE = 1024):
         self.user = USER
         self.pasw = PASW
         self.ip = socket.gethostbyname(IP)
@@ -70,7 +70,25 @@ class Mail:
             cmd = "RETR " + str(num) + "\r\n"
             self.cSocket.send(cmd.encode("utf-8"))
             reply = self.cSocket.recv(BUFF_SIZE).decode('utf-8')
-            print("text in %d:\n%s"%(num, reply))
+            time = reply[reply.index("Date: "):reply.index("From:")]
+            subject = reply[reply.index("Subject: "):reply.index("Message-ID:")]
+            sendfrom = reply[reply.index("Return-Path: "):reply.index("X-Original-To:")]
+            recv = reply[reply.index("Delivered-To: "):reply.index("Received:")]
+            context = reply[reply.index("User-Agent: Mutt/1.5.21 (2010-09-15)") + len("User-Agent: Mutt/1.5.21 (2010-09-15)"):]
+            # context = context[1:len(context)]
+            # context = context.join
+            print(sendfrom,time,subject,recv)
+            # print("text in %s's Mail:\n%s"%(str(num), reply))
+        except Exception as e:
+            print(e)
+            
+    def showMailcontext(self,num):
+        try:
+            cmd = "RETR " + str(num) + "\r\n"
+            self.cSocket.send(cmd.encode("utf-8"))
+            reply = self.cSocket.recv(BUFF_SIZE).decode('utf-8')
+            context = reply[reply.index("User-Agent: Mutt/1.5.21 (2010-09-15)") + len("User-Agent: Mutt/1.5.21 (2010-09-15)"):]
+            print(context)
         except Exception as e:
             print(e)
 			
@@ -81,3 +99,20 @@ class Mail:
         except Exception as e:
             print(e)
 		
+    def deleteMail(self,num):
+        try:
+            cmd = 'DELE ' + str(num) + "\r\n"
+            self.cSocket.send(cmd.encode('utf-8'))	
+            reply = self.cSocket.recv(BUFF_SIZE).decode('utf-8')
+            print('Receive message: %s' % reply)
+        except Exception as e:
+            print(e)
+            
+    def quit(self):
+        try:
+            cmd = "QUIT\r\n"
+            self.cSocket.send(cmd.encode('utf-8'))	
+            reply = self.cSocket.recv(BUFF_SIZE).decode('utf-8')
+            print('Receive message: %s' % reply)
+        except Exception as e:
+            print(e)
