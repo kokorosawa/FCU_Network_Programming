@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>568</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTextBrowser" name="displayBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>531</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>313</y>
+     <width>117</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DeleteMailNumber:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="listMailNumber">
+   <property name="geometry">
+    <rect>
+     <x>136</x>
+     <y>282</y>
+     <width>411</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="listMail">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>371</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ListMailNumber</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="deleteMail">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>337</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DeleteMail</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="listMailDetail">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>405</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ListMailDetail</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="showMailContext">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>371</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ShowMailContext</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="deleteMailNumber">
+   <property name="geometry">
+    <rect>
+     <x>136</x>
+     <y>313</y>
+     <width>411</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>282</y>
+     <width>99</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ListMailNumber:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="password">
+   <property name="geometry">
+    <rect>
+     <x>136</x>
+     <y>251</y>
+     <width>411</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="username">
+   <property name="geometry">
+    <rect>
+     <x>136</x>
+     <y>220</y>
+     <width>411</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>220</y>
+     <width>68</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>UserName:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>251</y>
+     <width>63</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Password:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>405</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="logIn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>337</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LogIn</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
