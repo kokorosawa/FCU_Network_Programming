@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>571</width>
+    <height>599</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTextBrowser" name="displayBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>531</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="create">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>520</y>
+     <width>251</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CreateTopic</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="reply">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>486</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reply</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="quit">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>554</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="discussion">
+   <property name="geometry">
+    <rect>
+     <x>277</x>
+     <y>520</y>
+     <width>271</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Discussion</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="register_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>486</y>
+     <width>251</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="subject">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>554</y>
+     <width>251</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Subject</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>220</y>
+     <width>541</width>
+     <height>261</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>UserName:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="username"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Password:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="password"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>CreateTopic</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="createTopicName"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>DeleteTopic:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="deleteTopicName"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>Reply:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QTextEdit" name="textEdit"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
