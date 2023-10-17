@@ -1,4 +1,5 @@
 import xmlrpc.client
+import json
 
 
 class Client:
@@ -17,21 +18,26 @@ class Client:
     def create(self, topic_name, description, founder_name):
         res = self.proxy.create(topic_name, description, founder_name)
         if res:
-            print('Create topic successfully')
+            print(f'Create topic {topic_name} successfully')
             return True
         else:
-            print('Create topic failed')
+            print('Topic alreay exists or create')
         return False
 
     def subject(self):
         res = self.proxy.subject()
-        print(res)
+        reslist = json.loads(res)
+        for i in reslist:
+            print(
+                F"Topic name: {i['topic_name']}, Description: {i['description']}, \nFounder name: {i['founder_name']}, Founded time: {i['founded_time']}")
+            print('----------------------------------------')
         return res
 
     def reply(self, topic_name, username, content):
         res = self.proxy.reply(topic_name, username, content)
         if res:
             print('Reply successfully')
+            print('your reply: ', content)
             return True
         else:
             print('Reply failed')
@@ -39,13 +45,18 @@ class Client:
 
     def discussion(self, topic_name):
         res = self.proxy.discussion(topic_name)
-        print(res)
+        reslist = json.loads(res)
+        reslist = sorted(reslist, key=lambda x: x['id'])
+        for i in reslist:
+            print(
+                F"ID: {i['id']}, Username: {i['username']},\nContent: {i['content']}, \nTime: {i['time']}")
+            print('----------------------------------------')
         return res
 
     def delete(self, topic_name):
         res = self.proxy.delete(topic_name)
         if res:
-            print('Delete successfully')
+            print('Delete ' + topic_name + ' successfully')
             return True
         else:
             print('Delete failed')
@@ -54,8 +65,7 @@ class Client:
 
 if __name__ == "__main__":
     client = Client()
-    client.register('user1', '123')
     client.create('topic1', 'description1', 'user1')
-    client.subject()
-    client.reply('topic1', 'user2', 'content2')
-    client.discussion('topic1')
+    client.reply('topic1', 'user1', 'content1')
+    client.reply('topic1', 'user1', 'content1')
+    client.delete('topic1')
