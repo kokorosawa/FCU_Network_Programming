@@ -6,13 +6,13 @@ def server_task(port):
     main_thread = Mysocket(int(port))
     main_thread.listenPort()
     i = 1
-    for _ in range(5):
+    while True:
         t_name = 'Thread ' + str(i)
         i += 1
-        print('Number of threads: %d\n' % threading.active_count())
-        print('Waiting to receive message from client\n')
+        #print('Number of threads: %d\n' % threading.active_count())
+        #print('Waiting to receive message from client\n')
         client, (rip, rport) = main_thread.socketAccept()
-        print('Got connection. Create thread: %s\n' % t_name)
+        #print('Got connection. Create thread: %s\n' % t_name)
         t = Mysocket(thread_name = t_name, client = client, serverIP = rip, PORT = rport)
         t.start()
 

@@ -30,6 +30,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.serverPort.textChanged.connect(self.setClientConnectPort)
         self.ui.openServer.clicked.connect(self.openServer)
         self.ui.openClient.clicked.connect(self.openClient)
+        self.ui.clear.clicked.connect(self.clear)
+        
+    def clear(self):
+        self.ui.serverLog.setText("")
+        self.ui.clientLog.setText("")
     
     def openClient(self):
         self.qthread = ClientTask(self.ui.inputNum.text(),self.ui.serverPort.text())

@@ -67,12 +67,12 @@ class Mysocket(threading.Thread):
             if client_msg:
                 s = struct.Struct('!' + 'i 5s')# ! is network order (receive format is network order)
                 unpacked_data = s.unpack(client_msg)
-                print('[Server]:Receive Integer = %d' %(unpacked_data[0]))
+                print('[Server]:Receive Integer: %d' %(unpacked_data[0]))
                 record = int(unpacked_data[0] - 1)
                 print("[Server]:return value: %d "% (record))# must encode a string to bytes
                 s = struct.Struct('!' + 'i')							# ! is network order
                 ret_data = s.pack(record)
-                time.sleep(5)
+                time.sleep(3)
                 self.client.send(ret_data)
         finally:
             self.lock.release()

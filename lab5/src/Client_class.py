@@ -89,7 +89,7 @@ class Mysocket:
         ret_data = self.Socket.recv(self.BUF_SIZE)
         s = struct.Struct('!' + 'i')
         ret_data = s.unpack(ret_data)	
-        print("[Client]:Return num:"+str(ret_data[0]))
+        print("[Client]:Return num: "+str(ret_data[0]))
         # if ret_data[0] == 0:
         #     self.Socket.shutdown(2)
         #     self.Socket.close()

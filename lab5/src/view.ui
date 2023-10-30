@@ -13,108 +13,188 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QPushButton" name="clear">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>541</width>
-     <height>401</height>
+     <x>440</x>
+     <y>370</y>
+     <width>113</width>
+     <height>32</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="labelAlignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-    <property name="horizontalSpacing">
-     <number>6</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>13</number>
-    </property>
-    <item row="0" column="1">
-     <widget class="QTextBrowser" name="clientLog"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Server IP :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>127.0.0.1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Client IP :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="label_6">
-      <property name="text">
-       <string>127.0.0.1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Server Port:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="serverPort"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Client Connect Port:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="clientConnectPort">
-      <property name="text">
-       <string>6666</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="label_7">
-      <property name="text">
-       <string>Input Number:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="serverPort_2"/>
-    </item>
-    <item row="6" column="0">
-     <widget class="QPushButton" name="openServer">
-      <property name="text">
-       <string>openServer</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QPushButton" name="openClient">
-      <property name="text">
-       <string>openClient</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QTextBrowser" name="serverLog"/>
-    </item>
-   </layout>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>216</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>127.0.0.1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>245</y>
+     <width>58</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Client IP :</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>245</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>127.0.0.1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>274</y>
+     <width>73</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Server Port:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="serverPort">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>274</y>
+     <width>125</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>308</y>
+     <width>123</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Client Connect Port:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="clientConnectPort">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>308</y>
+     <width>33</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>6666</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>337</y>
+     <width>87</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Input Number:</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="serverLog">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>11</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openClient">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>367</y>
+     <width>108</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>openClient</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>24</x>
+     <y>216</y>
+     <width>63</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Server IP :</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="openServer">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>367</y>
+     <width>112</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>openServer</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="clientLog">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>11</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="inputNum">
+   <property name="geometry">
+    <rect>
+     <x>286</x>
+     <y>337</y>
+     <width>125</width>
+     <height>21</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

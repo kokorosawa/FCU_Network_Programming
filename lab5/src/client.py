@@ -4,12 +4,13 @@ import sys
 
 
 def client_task(msg,port):
+    msg = int(msg)
     while msg > 0:     
         c = Mysocket(int(port))
         msg = int(msg)
         c.connect()
         c.send(msg)
-        msg = c.clientReceive() - 1
+        msg = int(c.clientReceive() - 1)
         
         if msg <= 0:
             c.stop()
