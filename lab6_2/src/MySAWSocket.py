@@ -24,10 +24,11 @@ class SAWSocket:
             self.PeerPort = 0
             # Bind 	on any incoming interface with port, '' is any interface
             self.socket.bind(("", port))
-            self.sliding_window_size = input("Enter sliding window size: ")
+            self.sliding_window_size = int(input("Enter sliding window size: "))
         else:  # Client side
             self.isServer = False
             self.PeerAddr = socket.gethostbyname(addr)
+            self.PeerPort = port
         # end if
 
         # Variables share between process and daemon
@@ -172,7 +173,7 @@ class SAWSocket:
 
         # Send SYN/ACK
         msg_format = struct.Struct("!" + "10s I")  # !: network order
-        reply = "SYN/ACK" + str(self.sliding_window_size)
+        reply = ("SYN/ACK".encode("utf-8"), self.sliding_window_size)
         packed_data = msg_format.pack(*reply)
         self.socket.sendto(packed_data, (self.PeerAddr, self.PeerPort))
 
@@ -209,8 +210,9 @@ class SAWSocket:
         recv_msg, (rip, rport) = self.socket.recvfrom(self.BufSize)
         msg_format = struct.Struct("!" + "10s I")  # !: network order
         unpacked_data = msg_format.unpack(recv_msg)
-        print(unpacked_data[0], unpacked_data[1])
-
+        print(unpacked_data[0].decode("utf-8"), unpacked_data[1])
+        self.sliding_window_size = unpacked_data[1]
+        print("Sliding window size: ", self.sliding_window_size)
         # send ACK
         message = "ACK"
         self.socket.sendto(message.encode("utf-8"), (self.PeerAddr, self.PeerPort))
@@ -261,6 +263,12 @@ class SAWSocket:
         ret_msg = self.copy4CS_buf()
         self.add_sn_receive()
         return ret_msg
+
+    def replyACK(self, msg):
+        msg_format = struct.Struct("!" + "10s I")  # !: network order
+        reply = ("ACK".encode("utf-8"), msg)
+        packed_data = msg_format.pack(*reply)
+        self.socket.sendto(packed_data, (self.PeerAddr, self.PeerPort))
 
     # end of receive()
 
