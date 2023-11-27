@@ -1,7 +1,29 @@
 import sys
 import socket
+import struct
 
 BUF_SIZE = 1024
+
+
+class Produer:
+    def __init__(self, port):
+        self.serverIP = socket.gethostbyname("127.0.0.1")
+        self.port = int(port)
+        self.cSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.cSocket.connect((self.serverIP, self.port))
+
+    def send(self, num):
+        s = struct.Struct("!" + "i 10s")
+        record = (num, "producer".encode("utf-8"))
+        packed_data = s.pack(*record)
+        self.cSocket.send(packed_data)
+
+    def receive(self):
+        server_reply = self.cSocket.recv(BUF_SIZE)
+        print(server_reply.decode("utf-8"))
+
+    def close(self):
+        self.cSocket.close()
 
 
 def main(port):

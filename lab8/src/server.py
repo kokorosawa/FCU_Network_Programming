@@ -1,6 +1,7 @@
 import sys
 import socket
 import select
+import struct
 
 inputs = []
 srv_list = []
@@ -24,9 +25,10 @@ class Server:
     def waiting(self):
         while True:
             readable, writable, exceptional = select.select(inputs, outputs, inputs)
+            # print("readable: ", readable)
             for s in readable:
-                print("readable: ", s)
-                print("srv_list: ", srv_list)
+                print("readable: ", s.getsockname()[1])
+                # print("srv_list: ", srv_list)
                 if s in srv_list:  # new connection
                     # Accept the incomming connection
                     connection, (rip, rport) = s.accept()
