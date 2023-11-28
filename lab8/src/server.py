@@ -36,6 +36,7 @@ class Server:
                     # Set the connection non blocking
                     connection.setblocking(False)
                     # Add connection to inputs (listen message on the connection)
+                    print("connection: ", connection.getsockname())
                     inputs.append(connection)
                     laddr = connection.getsockname()
                     msg = "Accept connection on port: %d from (%s, %d)" % (
