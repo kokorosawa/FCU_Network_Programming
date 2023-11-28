@@ -2,6 +2,7 @@ import sys
 import socket
 import select
 import struct
+import threading
 
 inputs = []
 srv_list = []
@@ -45,27 +46,50 @@ class Server:
                     print(msg)
                 else:  # receive data
                     try:
+                        print("quene: ", q)
                         data = s.recv(BUF_SIZE)
                         if data:
-                            raddr = s.getpeername()
-                            laddr = s.getsockname()
-                            msg = (
-                                "Receive messgae: "
-                                + data.decode("utf-8")
-                                + " on :"
-                                + str(laddr)
-                                + " from : "
-                                + str(raddr)
-                            )
-                            print(msg)
+                            if s.getsockname()[1] == 8880:
+                                print("Producer")
+                                fmt = struct.Struct("!" + "i")
+                                unpacked_data = fmt.unpack(data)
+                                print(unpacked_data)
+                                if len(q) < 5:
+                                    q.append(unpacked_data[0])
+                                    print(f"quene append {msg}\n")
+                                    msg = "OK"
+                                    fmt = struct.Struct("!" + "10s")
+                                    packed_data = fmt.pack(msg.encode("utf-8"))
+                                    s.send(packed_data)
+                                    s.close()
+                                else:
+                                    msg = "ERROR"
+                                    fmt = struct.Struct("!" + "10s")
+                                    packed_data = fmt.pack(msg.encode("utf-8"))
+                                    s.send(packed_data)
+                                    s.close()
+                            elif s.getsockname()[1] == 8881:
+                                print("Consumer")
+                                fmt = struct.Struct("!" + "10s")
+                                unpacked_data = fmt.unpack(data)
+                                print(unpacked_data[0].decode("utf-8"))
+                                if len(q) > 0:
+                                    msg = q.pop()
+                                    print(f"quene pop {msg}\n")
+                                    fmt = struct.Struct("!" + "i 5s")
+                                    msg = (msg, "OK".encode("utf-8"))
+                                    packed_data = fmt.pack(*msg)
+                                    s.send(packed_data)
+                                    s.close()
+                                elif len(q) == 0:
+                                    print("quene is empty")
+                                    msg = 0
+                                    fmt = struct.Struct("!" + "i 5s")
+                                    packed_data = (msg, "ERROR".encode("utf-8"))
+                                    packed_data = fmt.pack(*packed_data)
+                                    s.send(packed_data)
                             # Send message to client
-                            server_reply = "Server Reply!!"
-                            s.send(server_reply.encode("utf-8"))
-
-                            # Close connection
-                            print("Close connection from: ", raddr)
                             inputs.remove(s)
-                            s.close()
                     except ConnectionResetError:
                         print("Connection reset by peer")
                         pass

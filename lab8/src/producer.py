@@ -13,14 +13,16 @@ class Produer:
         self.cSocket.connect((self.serverIP, self.port))
 
     def send(self, num):
-        s = struct.Struct("!" + "i 10s")
-        record = (num, "producer".encode("utf-8"))
-        packed_data = s.pack(*record)
+        s = struct.Struct("!" + "i")
+        record = num
+        packed_data = s.pack(record)
         self.cSocket.send(packed_data)
 
     def receive(self):
         server_reply = self.cSocket.recv(BUF_SIZE)
-        print(server_reply.decode("utf-8"))
+        s = struct.Struct("!" + "10s")
+        unpack_data = s.unpack(server_reply)
+        print(unpack_data[0].decode("utf-8"))
 
     def close(self):
         self.cSocket.close()
@@ -53,4 +55,7 @@ def main(port):
 
 
 if __name__ == "__main__":
-    main(8880)
+    p = Produer(8880)
+    p.send(1)
+    p.receive()
+    p.close()
