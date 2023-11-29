@@ -24,6 +24,7 @@ class Customer:
 
     def receive(self):
         try:
+            time.sleep(0.5)
             server_reply = self.cSocket.recv(BUF_SIZE)
             if server_reply == b"":
                 self.cSocket.close()
@@ -33,25 +34,25 @@ class Customer:
                 s = struct.Struct("!" + "i 5s")
                 unpack_data = s.unpack(server_reply)
                 if "OK" in unpack_data[1].decode("utf-8"):
-                    print("OK")
-                    print(unpack_data[0])
+                    print("[Consumer]:OK")
+                    print(f"[Consumer]:{unpack_data[0]}")
                     return unpack_data[1].decode("utf-8")
                 elif "ERROR" in unpack_data[1].decode("utf-8"):
                     # print(unpack_data[1].decode("utf-8"))
-                    print("Waiting")
+                    print("[Consumer]:Waiting")
                     return None
         except BlockingIOError:
             print("Waiting")
+            return None
 
     def close(self):
         self.cSocket.close()
 
 
-if __name__ == "__main__":
+def consumer_task():
     c = Customer(8881)
     c.connect()
     c.send()
-    # c.receive()
     while True:
         if c.receive() != None:
             break
@@ -60,3 +61,7 @@ if __name__ == "__main__":
         c.send()
         time.sleep(2)
     c.close()
+
+
+if __name__ == "__main__":
+    consumer_task()
